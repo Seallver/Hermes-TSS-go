@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mainPage</title>
+    <style>
+        button{
+            cursor: pointer;
+            text-align: center;
+            width: 400px;
+            display: inline-grid;
+            background-color: lightskyblue;
+            margin: 10px;
+            padding: 10px;
+            border: 5px gray solid;
+            border-radius: 10px;
+            color: black;
+        }
+        button:hover{
+            background-color: aqua;
+        }
+        #part1{
+            text-align:center;
+            margin-top: 30px;
+        }
+        .mobile_result{
+            text-align: left;
+            overflow-x: auto;
+            width: 1100px;
+            height: 400px;
+            background-color: beige;
+            display: inline-block;
+            border: 3px lightskyblue solid;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+        #part2{
+            text-align:center;
+            margin-top: 30px;
+        }
+        #res_part{
+            text-align:center;
+            margin-top: 30px;
+        }
+        #returndiv{
+            text-align: right;
+        }
+        #return{
+            margin: 10px 50px;
+            border: 3px dimgrey solid;
+            display: inline-block;
+            background-color: gray;
+            border-radius: 4px;
+            text-decoration: none;
+            color: black;
+            padding: 2px 5px;
+        }
+        #return:hover{
+            background-color: darkgray;
+        }
+        form{
+            display: flex;
+            justify-content: center;
+            width: 30%;
+            border: 4px gray solid;
+            border-radius: 3px;
+            background-color: whitesmoke;
+            padding: 5px;
+            margin: 0 auto;
+        }
+        .input{
+            margin-top: 10px;
+        }
+        .submit{
+            margin-top: 10px;
+            margin-bottom:10px ;
+        }
+        label{
+            text-align: center;
+            display: inline-block;
+            width: 50px;
+        }
+    </style>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/RunHermesTest.js"></script>
+</head>
+<body>
+<div id="part1">
+<button id="start_part_a">
+    start part a
+</button>
+<br>
+<button id="start_part_b">
+    start part b
+</button>
+<br>
+<button id="start_mobile">
+    start mobile
+</button>
+<br>
+<br>
+<div class="res">
+    KeyGen Result:
+</div>
+<div class="mobile_result" id="KeyGen">
+</div>
+<div class="res">
+    Refresh Result:
+</div>
+<div class="mobile_result" id="Refresh">
+</div>
+<div class="res">
+    Sign Result:
+</div>
+<div class="mobile_result" id="Sign">
+</div>
+<hr>
+</div>
+
+<div id="part2">
+    <button id="button_part_a">set server a</button>
+    <form action="http://localhost:8000/start_server_a" method="post" id="parta" style="display:none;">
+        <label>srv:</label>
+        <input type="text" id="a_ip_input" placeholder="ip address and port" name="a_srv" class="input">
+        <br>
+        <input type="submit" value="start server a" class="submit">
+    </form>
+    <br>
+    <button id="button_part_b">set server b</button>
+    <form action="http://localhost:8000/start_server_b" method="post" id="partb" style="display:none;">
+        <label>srv:</label>
+        <input type="text" id="b_ip_input" placeholder="ip address and port" name="b_srv" class="input">
+        <br>
+        <label>p2p:</label>
+        <input type="text" id="a_ip_" placeholder="ip address and port" name="a_srv" class="input">
+        <br>
+        <input type="submit" value="start server b" class="submit">
+    </form>
+    <br>
+    <button id="button_part_m">set mobile</button>
+    <form onsubmit="return false" method="post" id="partm" style="display:none;" >
+        <label>p2p:</label>
+        <input type="text" id="a_ip" placeholder="ip address and port" name="m_p2p" class="input">
+        <br>
+        <label></label>
+        <input type="text" id="b_ip" placeholder="ip address and port" name="m_p2p" class="input">
+        <br>
+        <input type="button" value="start mobile" class="submit" id="start_mobile_" onclick="login()">
+    </form>
+</div>
+
+<div id="res_part">
+    <div class="res">
+        KeyGen Result:
+    </div>
+    <div class="mobile_result" id="KeyGen_">
+    </div>
+    <div class="res">
+        Refresh Result:
+    </div>
+    <div class="mobile_result" id="Refresh_">
+    </div>
+    <div class="res">
+        Sign Result:
+    </div>
+    <div class="mobile_result" id="Sign_">
+    </div>
+    <hr>
+</div>
+
+
+
+<div id = "returndiv">
+    <a href="http://localhost:8000" id="return">
+        return
+    </a>
+</div>
+
+<script  type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js">
+</script>
+<script>
+
+    document.getElementById('button_part_a').addEventListener('click', function () {
+        let form = document.getElementById("parta");
+        if (form.style.display === 'none') {
+            form.style.display = 'block'; // 展开表单
+        } else {
+            form.style.display = 'none'; // 如果需要，可以添加逻辑来折叠表单
+        }
+    });
+
+    document.getElementById('button_part_b').addEventListener('click', function () {
+        let form = document.getElementById("partb");
+        if (form.style.display === 'none') {
+            form.style.display = 'block'; // 展开表单
+        } else {
+            form.style.display = 'none'; // 如果需要，可以添加逻辑来折叠表单
+        }
+    });
+
+    document.getElementById('button_part_m').addEventListener('click', function () {
+        let form = document.getElementById("partm");
+        if (form.style.display === 'none') {
+            form.style.display = 'block'; // 展开表单
+        } else {
+            form.style.display = 'none'; // 如果需要，可以添加逻辑来折叠表单
+        }
+
+    });
+
+
+
+    function login() {
+        $.ajax({
+            //几个参数需要注意一下
+            type:"post",
+            url: "http://localhost:8000/start_client_mobile",
+            data: $('#partm').serializeArray(),
+            success: function (result) {
+                let ndata = result.replace(/[\r\n]+/g, ' ');
+                let data = ndata
+                let i = 0
+                let sigleString = ""
+                let keygenString = "", refreshString = "", SignString = ""
+                while (i < data.length) {
+                    let left = find(data, i, "{")
+                    let right = find(data, left, "}")
+                    sigleString = data.slice(left - 23, right + 1)
+                    if (sigleString.includes("keygen-threshold")) {
+                        keygenString += sigleString + "\n"
+                    } else if (sigleString.includes("refresh-threshold")) {
+                        refreshString += sigleString + "\n"
+                    } else {
+                        SignString += sigleString + "\n"
+                    }
+                    i = right
+                }
+                document.getElementById('KeyGen_').textContent = keygenString;
+                document.getElementById('Refresh_').textContent = refreshString;
+                document.getElementById('Sign_').textContent = SignString;
+            },
+            error: function () {
+                alert("异常！");
+            }
+        });
+    }
+
+
+        function find(str, index, char) {
+            let i = index
+            let len = str.length
+            for (i; i < len; i++) {
+                if (str[i] === char)
+                    return i;
+            }
+        }
+
+        document.getElementById('start_part_a').addEventListener("click", function () {
+            fetch("http://localhost:8000/start_part_a")
+        })
+        document.getElementById('start_part_b').addEventListener("click", function () {
+            fetch("http://localhost:8000/start_part_b")
+        })
+        document.getElementById('start_mobile').addEventListener("click", function () {
+            fetch("http://localhost:8000/start_mobile")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text(); // 解析JSON响应
+                })
+                .then(data => {
+                    let ndata = data.replace(/[\r\n]+/g, ' ');
+                    data = ndata
+                    let i = 0
+                    let sigleString = ""
+                    let keygenString = "", refreshString = "", SignString = ""
+                    while (i < data.length) {
+                        let left = find(data, i, "{")
+                        let right = find(data, left, "}")
+                        sigleString = data.slice(left - 23, right + 1)
+                        if (sigleString.includes("keygen-threshold")) {
+                            keygenString += sigleString + "\n"
+                        } else if (sigleString.includes("refresh-threshold")) {
+                            refreshString += sigleString + "\n"
+                        } else {
+                            SignString += sigleString + "\n"
+                        }
+                        i = right
+                    }
+                    document.getElementById('KeyGen').textContent = keygenString;
+                    document.getElementById('Refresh').textContent = refreshString;
+                    document.getElementById('Sign').textContent = SignString;
+
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error);
+                    // 你也可以在这里更新结果栏以显示错误信息
+                    document.getElementById('mobile_result').textContent = 'Error: ' + error.message;
+                })
+        })
+
+</script>
+
+</body>
+</html>

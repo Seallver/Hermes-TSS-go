@@ -1,0 +1,22 @@
+linters:
+  enable:
+    - goimports
+    - revive
+    - govet
+    - deadcode
+    - gosimple
+    - errcheck
+    - ineffassign
+    - staticcheck
+    - goconst
+    - dupl
+    - exhaustive
+    - gocognit
+    - godot
+    - goconst
+    - godox
+    - importas
+    - nilerr
+    - prealloc
+  disable:
+    - typecheck

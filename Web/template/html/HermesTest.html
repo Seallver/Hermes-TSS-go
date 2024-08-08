@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mainPage</title>
+    <style>
+        #main{
+            text-align:center;
+            margin-top: 30px;
+        }
+        button{
+            cursor: pointer;
+            text-align: center;
+            width: 400px;
+            display: inline-grid;
+            background-color: lightskyblue;
+            margin: 10px;
+            padding: 10px;
+            border: 5px gray solid;
+            border-radius: 10px;
+            color: black;
+        }
+        button:hover{
+            background-color: aqua;
+        }
+        .HermesTestResult{
+            text-align: left;
+            overflow: auto;
+            width: 1100px;
+            height: 400px;
+            background-color: beige;
+            display: inline-block;
+            border: 3px lightskyblue solid;
+            padding: 10px;
+            margin: 10px 10px 25px;
+            border-radius: 10px;
+        }
+        .res{
+            font-size: 14px;
+            text-align: left;
+            margin-left: 70px;
+        }
+        #returndiv{
+            text-align: right;
+        }
+        #return{
+            margin: 10px 50px;
+            border: 3px dimgrey solid;
+            display: inline-block;
+            background-color: gray;
+            border-radius: 4px;
+            text-decoration: none;
+            color: black;
+            padding: 2px 5px;
+        }
+        #return:hover{
+            background-color: darkgray;
+        }
+    </style>
+<!--    <link rel="stylesheet" href="../css/style.css">-->
+</head>
+<body>
+<div id="main">
+    <button id="RunHermesTest">
+        HermesTest Start
+    </button>
+    <br>
+    <br>
+    <div class="res">
+        KeyGen Result:
+    </div>
+    <div class="HermesTestResult" id="KeyGen">
+    </div>
+    <div class="res">
+        Refresh Result:
+    </div>
+    <div class="HermesTestResult" id="Refresh">
+    </div>
+    <div class="res">
+        Sign Result:
+    </div>
+    <div class="HermesTestResult" id="Sign">
+    </div>
+    <br>
+</div>
+<div id = "returndiv">
+    <a href="http://localhost:8000" id="return">
+        return
+    </a>
+</div>
+
+<script>
+    function find(str,index,char) {
+        let i = index
+        let len = str.length
+        for (i; i < len; i++) {
+            if (str[i] === char)
+                return i;
+        }
+    }
+    document.getElementById('RunHermesTest').addEventListener("click", function() {
+        fetch('http://localhost:8000/api/HermesTest')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                let ndata = data.replace(/[\r\n]+/g, ' ');
+                data = ndata
+                let i = 0
+                let sigleString = ""
+                let keygenString = "",refreshString = "",SignString = ""
+                while(i<data.length) {
+                    let left = find(data,i,"{")
+                    let right = find(data,left,"}")
+                    sigleString = data.slice(left-23,right+1)
+                    if(sigleString.includes("keygen-threshold")){
+                        keygenString+=sigleString+"\n"
+                    }
+                    else if(sigleString.includes("refresh-threshold")){
+                        refreshString+=sigleString+"\n"
+                    }
+                    else{
+                        SignString+=sigleString+"\n"
+                    }
+                    i = right
+                }
+                document.getElementById('KeyGen').textContent = keygenString;
+                document.getElementById('Refresh').textContent = refreshString;
+                document.getElementById('Sign').textContent = SignString;
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+                // 你也可以在这里更新结果栏以显示错误信息
+                document.getElementById('HermesTestResult').textContent = 'Error: ' + error.message;
+            })
+    })</script>
+
+</body>
+</html>

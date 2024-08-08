@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mainPage</title>
+    <style>
+        #main{
+            text-align:center;
+            margin-top: 30px;
+        }
+        button{
+            cursor: pointer;
+            text-align: center;
+            width: 400px;
+            display: inline-grid;
+            background-color: lightskyblue;
+            margin: 10px;
+            padding: 10px;
+            border: 5px gray solid;
+            border-radius: 10px;
+            color: black;
+        }
+        button:hover{
+            background-color: aqua;
+        }
+        #returndiv{
+            text-align: right;
+        }
+        #return{
+            margin: 10px 50px;
+            border: 3px dimgrey solid;
+            display: inline-block;
+            background-color: gray;
+            border-radius: 4px;
+            text-decoration: none;
+            color: black;
+            padding: 2px 5px;
+        }
+        #return:hover{
+            background-color: darkgray;
+        }
+        .res_lable{
+            text-align: left;
+            margin-left: 5px;
+        }
+        .res_content{
+            text-align: left;
+            border: 2px black solid;
+            border-radius: 1px;
+            padding: 10px;
+            margin: 1px 10px 50px 5px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="main">
+    <button id="RunErrorTest">
+        ErrorTest Start
+    </button>
+    <br>
+    <div id="res">
+        <div class="res_lable">
+            N threshold
+        </div><br>
+        <div class="res_content" id="N threshold">
+            ERR
+        </div><br>
+        <div class="res_lable">
+            T threshold
+        </div><br>
+        <div class="res_content" id="T threshold">
+            ERR
+        </div><br>
+        <div class="res_lable">
+            -1 threshold
+        </div><br>
+        <div class="res_content" id="-1 threshold">
+            ERR
+        </div><br>
+        <div class="res_lable">
+            max threshold
+        </div><br>
+        <div class="res_content"id="max threshold">
+            ERR
+        </div><br>
+        <div class="res_lable">
+            max threshold -1
+        </div><br>
+        <div class="res_content" id="max threshold -1">
+            ERR
+        </div><br>
+        <div class="res_lable">
+            no self
+        </div><br>
+        <div class="res_content" id="no self">
+            ERR
+        </div><br>
+        <div class="res_lable">
+            duplicate self
+        </div><br>
+        <div class="res_content" id="duplicate self">
+            ERR
+        </div><br>
+        <div class="res_lable">
+            duplicate other
+        </div><br>
+        <div class="res_content" id="duplicate other">
+            ERR
+        </div><br>
+    </div>
+</div>
+
+
+
+</div>
+<div id = "returndiv">
+    <a href="http://localhost:8000" id="return">
+        return
+    </a>
+</div>
+
+<script>
+    document.getElementById("RunErrorTest").addEventListener("click",function (){
+        let Error_array = ["N threshold","T threshold","-1 threshold","max threshold","max threshold -1","no self","duplicate self","duplicate other"]
+        for (let i = 0; i < Error_array.length; i++) {
+            let error_name = Error_array[i]
+            fetch("http://localhost:8000/" + error_name)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById(error_name).textContent = data;
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error);
+                    // 你也可以在这里更新结果栏以显示错误信息
+                    document.getElementById(error_name).textContent = 'Error: ' + error.message;
+                })
+        }
+    })
+</script>
+
+</body>
+</html>

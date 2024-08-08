@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package mpc;
+
+service Network{
+  rpc AllStream(stream MpcData) returns (stream MpcData){}
+}
+
+message MpcData{
+  bytes msg=2;
+}
+
