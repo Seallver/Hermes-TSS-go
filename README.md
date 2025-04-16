@@ -1,3 +1,5 @@
+# 主要贡献于通信模块和前端
+
 本项目基于[multi-party-sig](https://github.com/easedot/multi-party-sig)库进行编写,详见[README](easedot-multi-party-sig-README.md).
 
 
